@@ -7,14 +7,9 @@ class Books extends React.Component{
     }
 
     callAPI() {
-        fetch("http://localhost:7071/api/test")
+        fetch("http://localhost:7071/api/crypto")
             .then(res => res.text())
             .then(res => this.setState({ data: res }));
-    }
-    
-    componentWillMount() {
-        this.callAPI();
-        console.log(this.state.data);
     }
 
     render(){
