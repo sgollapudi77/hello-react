@@ -7,7 +7,7 @@ class CryptoPortfolio extends React.Component{
     }
 
     callAPI() {
-        fetch("/api/crypto")
+        fetch("../../api/crypto")
             .then(res => res.text())
             .then(res => this.setState({ data: res }));
     }
