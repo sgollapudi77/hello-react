@@ -50,4 +50,5 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         logging.info(data)
     except (ConnectionError, Timeout, TooManyRedirects) as e:
         logging.info(e)
+        data["request"] = ["timed out"]
     return func.HttpResponse(json.dumps(data))
