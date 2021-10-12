@@ -17,7 +17,7 @@ function Navbar() {
       color="info"
       rightLinks={
         <List className={classes.list}>
-          <ListItem className={classes.listItem}>
+          {/* <ListItem className={classes.listItem}>
             <Link to="/home" className={classes.navLink}>
               {" "}
               Homepage
@@ -45,6 +45,12 @@ function Navbar() {
             <Link to="/intro" className={classes.navLink} color="transparent">
               Profile
             </Link>
+          </ListItem> */}
+          <ListItem className={classes.listItem}>
+            <Link to="/football" className={classes.navLink}>
+              {" "}
+              Football
+            </Link>
           </ListItem>
           <ListItem className={classes.listItem}>
             <CustomDropdown
@@ -70,7 +76,7 @@ function Navbar() {
               dropdownList={["News", "Portfolio", "Algo"]}
             />
           </ListItem>
-          <ListItem className={classes.listItem}>
+          {/* <ListItem className={classes.listItem}>
             <CustomDropdown
               brand="Info Color"
               hoverColor="info"
@@ -81,8 +87,8 @@ function Navbar() {
               }}
               dropdownList={["One-piece","Others"]}
             />
-          </ListItem>
-          <ListItem className={classes.listItem}>
+          </ListItem> */}
+          {/* <ListItem className={classes.listItem}>
             <CustomDropdown
               brand="Info Color"
               hoverColor="info"
@@ -105,7 +111,7 @@ function Navbar() {
               }}
               dropdownList={["Microsoft","Others"]}
             />
-          </ListItem>
+          </ListItem> */}
         </List>
       }
     />

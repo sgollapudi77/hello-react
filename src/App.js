@@ -23,6 +23,7 @@ import PreviousJobs from 'pages/PreviousJobs';
 import Microsoft from 'pages/Microsoft';
 import TvSeries from 'pages/TvSeries';
 import OnePiece from 'pages/OnePiece';
+import Football from 'pages/Football';
 
 import {Switch, Route} from "react-router-dom";
 import Navbar from './Navbar';
@@ -80,6 +81,7 @@ function App() {
         <Route path = "/stocks/algo" component = {StocksAlgo}/>
         <Route path = "/stocks/portfolio" component = {StocksPortfolio}/>
         <Route path = "/movies" component = {Movies}/>
+        <Route path = "/football" component = {Football}/>
         <Route path = "/tvseries" component = {TvSeries}/>
         <Route exact path = "/jobs" component = {Jobs}/>
         <Route path = "/jobs/others" component = {PreviousJobs}/>

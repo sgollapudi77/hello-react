@@ -7,17 +7,15 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
     
     name = req.params.get('name')
+    time = req.params.get('time')
     if not name:
-        try:
-            req_body = req.get_json()
-        except ValueError:
-            pass
-        else:
-            name = req_body.get('name')
+        name = "msft"
+    if not time:
+        time = "1h"
     logging.info(name)
     details = yf.Ticker(str(name))
     currentPrice = details.info['currentPrice']
-    hist = details.history(period="1mo",interval="1h")
-    logging.info(currentPrice)
+    hist = details.history(period="1mo",interval=str(time))
+    logging.info(hist)
     return func.HttpResponse(str(currentPrice))
     # return func.HttpResponse("hey")
