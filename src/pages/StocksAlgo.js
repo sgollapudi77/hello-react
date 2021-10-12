@@ -7,7 +7,7 @@ class StocksAlgo extends React.Component{
     }
 
     callAPI() {
-        fetch("/api/stock")
+        fetch("/api/stock?name=MSFT")
             .then(res => res.text())
             .then(res => this.setState({ data: res }));
     }

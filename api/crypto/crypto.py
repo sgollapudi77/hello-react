@@ -1,5 +1,4 @@
 import logging
-from typing import OrderedDict
 import azure.functions as func
 from requests import Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
