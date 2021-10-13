@@ -7,6 +7,7 @@ class StocksAlgo extends React.Component{
             data:"",
             value:""
         };
+        this.isSubmit = false;
         this.sendData = this.sendData.bind(this);
         this.takeInput = this.takeInput.bind(this);
     }
@@ -18,6 +19,7 @@ class StocksAlgo extends React.Component{
     sendData(event){
         // alert('Submitted '+this.state.value)
         this.callAPI()
+        this.isSubmit = true;
         event.preventDefault();
     }
 
@@ -30,7 +32,6 @@ class StocksAlgo extends React.Component{
     }
 
     render(){
-        this.callAPI();
         return(
             <>
             <h1>Welcome to Stocks data</h1>
