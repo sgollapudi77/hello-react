@@ -34,6 +34,9 @@ class StocksAlgo extends React.Component{
         return(
             <>
             <h1>Welcome to Stocks data</h1>
+            <p>Enter stock symbol to view its Info</p>
+            <p>For example symbol for Microsoft share is MSFT, and Apple is AAPL</p>
+            <p>For any NSE related stocks add ".ns" at the end like "HDFCBANK.NS"</p>
             <form onSubmit = {this.sendData}>
                 <label>Enter stock</label>
                 <br/>
