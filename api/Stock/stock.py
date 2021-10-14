@@ -1,50 +1,62 @@
 from azure.storage.blob import BlobServiceClient
 import logging
-import os
-import azure.functions as func
 import yfinance as yf
+import azure.functions as func
 
-connectionString = "DefaultEndpointsProtocol=https;AccountName=pricepredictio0912187405;AccountKey=fkNojzR5QPRD3N73sJykRlgfz3WWhpNS4Tzn50ng+dwgSl6EByzS/3JqgruQNCu+qXHUlZrjU9nAd6o+I6R1Vg==;EndpointSuffix=core.windows.net"
-containerName = "stockdata"
+class StockHandler:
+    def __init__(self) -> None:        
+        self.connectionString = "DefaultEndpointsProtocol=https;AccountName=pricepredictio0912187405;AccountKey=fkNojzR5QPRD3N73sJykRlgfz3WWhpNS4Tzn50ng+dwgSl6EByzS/3JqgruQNCu+qXHUlZrjU9nAd6o+I6R1Vg==;EndpointSuffix=core.windows.net"
+        self.containerName = "stockdata"
 
-destPath = ""
+        self.service_client = BlobServiceClient.from_connection_string(self.connectionString)
+        self.container_client = self.service_client.get_container_client(self.containerName)
+        self.details = []
 
-def main(req: func.HttpRequest) -> func.HttpResponse:
-    service_client = BlobServiceClient.from_connection_string(connectionString)
-    container_client = service_client.get_container_client(containerName)
+    def isProper(self, name:str):
+        try:
+            self.details = yf.Ticker(str(name))
+            logging.info(self.details.info['currentPrice'])
+            return True
+        except:
+            return False
 
-    name = req.params.get('name')
-    time = req.params.get('time')
-
-    if not name:
-        name = "msft"
-    if not time:
-        time = "1h"
-
-    name = name.lower()
-    logging.info(name)
-    details = yf.Ticker(str(name))
-
-    try:
-        currentPrice = details.info['currentPrice']
-        hist = details.history(period="max")
-        hist = hist.to_csv()
-        azureName = destPath+name+".csv"
-        
-        blobs = container_client.list_blobs()
+    def isPresent(self, name:str):
+        azureName = name+".csv"
+        blobs = self.container_client.list_blobs()
         list = []
         for blob in blobs:
             list.append(blob.name)
-        
+            
         if azureName not in list:
-            #Upload to storage blob
+            return False
+        else:
+            return True
+
+    def uploadToStorage(self, name:str):
+        # details = yf.Ticker(str(name))
+        hist = self.details.history(period="max")
+        hist = hist.to_csv()
+        azureName = name+".csv"
+        try:
             logging.info("Uploading the " + name + " to Azure storage")
-            container_client.upload_blob(name=azureName,data=hist)
-        return func.HttpResponse(str(currentPrice))
-    except:
-        return func.HttpResponse("Enter proper stock name")
+            self.container_client.upload_blob(name=azureName,data=hist)
+            # return True
+        except:
+            logging.info("Timed out while connecting to Azure")
+            # return False
+
+def main(req: func.HttpRequest) -> func.HttpResponse:
+    name = req.params.get('name')
+    time = req.params.get('time')
+    if not name:
+        name = "msft"
+    name = name.lower()
+    stockHandler = StockHandler()
+    if not stockHandler.isProper(name):
+        return func.HttpResponse("Enter valid stock symbol")
+
+    if not stockHandler.isPresent(name):
+        stockHandler.uploadToStorage(name)
+    
+    return func.HttpResponse("hey")
         
-    # with open(file,"rb") as data:
-    # return func.HttpResponse("hey")        
-    # # logging.info(hist)
-    # file = sourcePath + "/"+ name +".csv"
