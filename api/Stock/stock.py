@@ -78,6 +78,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     if not stockHandler.isPresent(name):
         stockHandler.uploadToStorage(name)
     
-    value = getPrediction(name,time)
+    try:
+        value = getPrediction(name,time)
+    except:
+        value = stockHandler.details.info['currentPrice']
     return func.HttpResponse(str(value))
         
