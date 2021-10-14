@@ -2,6 +2,7 @@ from azure.storage.blob import BlobServiceClient
 import logging
 import json
 import yfinance as yf
+from datetime import datetime
 import azure.functions as func
 from requests import Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
@@ -14,6 +15,7 @@ class StockHandler:
         self.service_client = BlobServiceClient.from_connection_string(self.connectionString)
         self.container_client = self.service_client.get_container_client(self.containerName)
         self.details = []
+        self.timeDifference = 604800 #seconds in a week
 
     def isProper(self, name:str):
         try:
@@ -23,17 +25,24 @@ class StockHandler:
         except:
             return False
 
+    def isOld(self, time:datetime):
+        diff = datetime.now() - time.replace(tzinfo=None)
+        if int(diff.total_seconds()) > self.timeDifference:
+            return True
+        else:
+            return False
+
     def isPresent(self, name:str):
         azureName = name+".csv"
         blobs = self.container_client.list_blobs()
-        list = []
         for blob in blobs:
-            list.append(blob.name)
-            
-        if azureName not in list:
-            return False
-        else:
-            return True
+            if blob.name == azureName:
+                if self.isOld(blob.last_modified):
+                    logging.info("Last updated more than a week ago, updating freshly!!")
+                    return False                        
+                return True
+        
+        return False
 
     def uploadToStorage(self, name:str):
         # details = yf.Ticker(str(name))
@@ -42,11 +51,9 @@ class StockHandler:
         azureName = name+".csv"
         try:
             logging.info("Uploading the " + name + " to Azure storage")
-            self.container_client.upload_blob(name=azureName,data=hist)
-            # return True
+            self.container_client.upload_blob(name=azureName,data=hist,overwrite=True)
         except:
             logging.info("Timed out while connecting to Azure")
-            # return False
 
 def getPrediction(name:str, time: int):
     url = "http://e875713d-d607-4214-a541-e4d8efd202aa.eastasia.azurecontainer.io/score"
@@ -76,6 +83,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse("Enter valid stock symbol")
 
     if not stockHandler.isPresent(name):
+        #Enters here if the stock is not present ot updated morethan a week ago
         stockHandler.uploadToStorage(name)
     
     try:
