@@ -48,6 +48,21 @@ class StockHandler:
             logging.info("Timed out while connecting to Azure")
             # return False
 
+def getPrediction(name:str, time: int):
+    url = "http://d68f9c6d-6375-4e7e-81e3-ffd11b047868.eastasia.azurecontainer.io/score"
+    body = {
+        "symbol":name,
+        "daycount":time
+    }
+    session = Session()
+    try:
+        response = session.get(url, json=body)
+        response = json.loads(response.text)
+        # logging.info(response['modelOutpt'])
+        return str(response['modelOutpt'])
+    except (ConnectionError, Timeout, TooManyRedirects) as e:
+        return "Timed out"
+
 def main(req: func.HttpRequest) -> func.HttpResponse:
     name = req.params.get('name')
     time = req.params.get('time')
@@ -63,17 +78,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     if not stockHandler.isPresent(name):
         stockHandler.uploadToStorage(name)
     
-    url = "http://d68f9c6d-6375-4e7e-81e3-ffd11b047868.eastasia.azurecontainer.io/score"
-    body = {
-        "symbol":name,
-        "daycount":time
-    }
-    session = Session()
-    try:
-        response = session.get(url, json=body)
-        response = json.loads(response.text)
-        # logging.info(response['modelOutpt'])
-        return func.HttpResponse(str(response['modelOutpt']))
-    except (ConnectionError, Timeout, TooManyRedirects) as e:
-        return func.HttpResponse("Timed out")
+    value = getPrediction(name,time)
+    return func.HttpResponse(str(value))
         
