@@ -1,7 +1,10 @@
 from azure.storage.blob import BlobServiceClient
 import logging
+import json
 import yfinance as yf
 import azure.functions as func
+from requests import Session
+from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 
 class StockHandler:
     def __init__(self) -> None:        
@@ -50,6 +53,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     time = req.params.get('time')
     if not name:
         name = "msft"
+    if not time:
+        time = 1
     name = name.lower()
     stockHandler = StockHandler()
     if not stockHandler.isProper(name):
@@ -58,5 +63,17 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     if not stockHandler.isPresent(name):
         stockHandler.uploadToStorage(name)
     
-    return func.HttpResponse("hey")
+    url = "http://d68f9c6d-6375-4e7e-81e3-ffd11b047868.eastasia.azurecontainer.io/score"
+    body = {
+        "symbol":name,
+        "daycount":time
+    }
+    session = Session()
+    try:
+        response = session.get(url, json=body)
+        response = json.loads(response.text)
+        # logging.info(response['modelOutpt'])
+        return func.HttpResponse(str(response['modelOutpt']))
+    except (ConnectionError, Timeout, TooManyRedirects) as e:
+        return func.HttpResponse("Timed out")
         
