@@ -85,11 +85,15 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     if not stockHandler.isPresent(name):
         #Enters here if the stock is not present ot updated morethan a week ago
         stockHandler.uploadToStorage(name)
-    
+
+    currentPrice = str(stockHandler.details.info['currentPrice'])
+
     try:
-        value = getPrediction(name,time)
+        predictedPrice = str(getPrediction(name,time))
     except:
-        value = stockHandler.details.info['currentPrice']
+        predictedPrice = currentPrice
         logging.info("Showing current price")
-    return func.HttpResponse(str(value))
+    
+    return func.HttpResponse(str("Predicted price of "+name+" is "+predictedPrice+
+    "\nCurrent price of "+name+" is "+currentPrice))
         

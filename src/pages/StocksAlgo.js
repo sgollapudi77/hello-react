@@ -5,9 +5,8 @@ class StocksAlgo extends React.Component{
         super(props);
         this.state = {
             data:"",
-            value:""
+            value:"",
         };
-        this.isSubmit = false;
         this.sendData = this.sendData.bind(this);
         this.takeInput = this.takeInput.bind(this);
     }
@@ -17,9 +16,7 @@ class StocksAlgo extends React.Component{
     }
 
     sendData(event){
-        // alert('Submitted '+this.state.value)
         this.callAPI()
-        this.isSubmit = true;
         event.preventDefault();
     }
 
@@ -46,7 +43,7 @@ class StocksAlgo extends React.Component{
                 <br/>
                 <input style={{height:"24px"}} type="text" value={this.state.value} onChange={this.takeInput}/>
             </form>
-            <p>Future price of {this.state.value} is {this.state.data}</p>   
+            <pre>{this.state.data}</pre>   
             <h6> For example symbol for Microsoft share is MSFT 
                 and Apple is AAPL. For any NSE related stocks add ".ns" at the end like "HDFCBANK.NS"
             </h6>
