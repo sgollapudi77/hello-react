@@ -6,4 +6,3 @@ azure-functions
 yfinance
 requests==2.20.0
 azure.storage.blob
-json
