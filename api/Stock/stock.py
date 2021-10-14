@@ -49,7 +49,7 @@ class StockHandler:
             # return False
 
 def getPrediction(name:str, time: int):
-    url = "http://d68f9c6d-6375-4e7e-81e3-ffd11b047868.eastasia.azurecontainer.io/score"
+    url = "http://e875713d-d607-4214-a541-e4d8efd202aa.eastasia.azurecontainer.io/score"
     body = {
         "symbol":name,
         "daycount":time
@@ -82,5 +82,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         value = getPrediction(name,time)
     except:
         value = stockHandler.details.info['currentPrice']
+        logging.info("Showing current price")
     return func.HttpResponse(str(value))
         

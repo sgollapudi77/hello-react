@@ -35,19 +35,23 @@ class StocksAlgo extends React.Component{
         return(
             <>
             <div>
-                <h3>
+                <h1>
                     <small>Stocks Prediction</small>
-                </h3>    
-                <p>Enter stock symbol to view its Info. For example symbol for Microsoft share is MSFT
-                    and Apple is AAPL. For any NSE related stocks add ".ns" at the end like "HDFCBANK.NS"
+                </h1>    
+                <p>Enter stock symbol to get its predicted price for the next day.
                 </p>
             </div>
             <form onSubmit = {this.sendData}>
-                <label>Enter stock</label>
+                <label><h4>Enter stock</h4></label>
                 <br/>
-                <input type="text" value={this.state.value} onChange={this.takeInput}/>
+                <input style={{height:"24px"}} type="text" value={this.state.value} onChange={this.takeInput}/>
             </form>
-            <p>Current price of {this.state.value} is {this.state.data}</p>            
+            <p>Future price of {this.state.value} is {this.state.data}</p>   
+            <h6> For example symbol for Microsoft share is MSFT 
+                and Apple is AAPL. For any NSE related stocks add ".ns" at the end like "HDFCBANK.NS"
+            </h6>
+            <h6>We're trying to add the feature where user can see the predicted price at the day he wants
+            </h6>         
             </> 
         );
     }
