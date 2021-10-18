@@ -45,13 +45,13 @@ function Navbar() {
             <Link to="/intro" className={classes.navLink} color="transparent">
               Profile
             </Link>
-          </ListItem> */}
-          {/* <ListItem className={classes.listItem}>
+      </ListItem> */}
+          <ListItem className={classes.listItem}>
             <Link to="/football" className={classes.navLink}>
               {" "}
               Football
             </Link>
-          </ListItem> */}
+          </ListItem>
           <ListItem className={classes.listItem}>
             <CustomDropdown
               brand="Info Color"

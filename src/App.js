@@ -1,5 +1,6 @@
 import './App.css';
 import React from "react";
+import { Link } from "react-router-dom";
 
 import Books from './pages/Books'
 import HomePage from './pages/Homepage';
@@ -32,7 +33,10 @@ import Navbar from './Navbar';
 function Hello(props){
   return(
     <div>
-      <p>Currently we've developed a Stock price prediction website(Go to Stocks-&gt;Algo)</p>
+      <p>Currently we've developed a Stock price prediction website. Go to <Link to="/stocks/algo">
+              {" "}
+              Stocks-Algo
+            </Link></p>
       {/* <p></p> */}
       <p>This is an example to show the contents of an object using props. {props.version} & {props.message}</p>
     </div>
