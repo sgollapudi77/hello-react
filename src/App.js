@@ -32,8 +32,9 @@ import Navbar from './Navbar';
 function Hello(props){
   return(
     <div>
-      <p>This is the example of components in react.</p>
-      <p>This is an example to show the contents of an object using props. {props.version} & {props.message}</p>
+      <p>Currently we've developed a Stock price prediction website(Go to Stocks-&gt;Algo)</p>
+      {/* <p></p> */}
+      {/* <p>This is an example to show the contents of an object using props. {props.version} & {props.message}</p> */}
     </div>
   );
 }

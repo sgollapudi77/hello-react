@@ -15,7 +15,7 @@ class StockHandler:
         self.service_client = BlobServiceClient.from_connection_string(self.connectionString)
         self.container_client = self.service_client.get_container_client(self.containerName)
         self.details = []
-        self.timeDifference = 604800 #seconds in a week
+        self.timeDifference = 86400 #seconds in a week
 
     def isProper(self, name:str):
         try:

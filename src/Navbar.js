@@ -46,12 +46,12 @@ function Navbar() {
               Profile
             </Link>
           </ListItem> */}
-          <ListItem className={classes.listItem}>
+          {/* <ListItem className={classes.listItem}>
             <Link to="/football" className={classes.navLink}>
               {" "}
               Football
             </Link>
-          </ListItem>
+          </ListItem> */}
           <ListItem className={classes.listItem}>
             <CustomDropdown
               brand="Info Color"
