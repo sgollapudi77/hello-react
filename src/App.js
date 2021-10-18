@@ -34,7 +34,7 @@ function Hello(props){
     <div>
       <p>Currently we've developed a Stock price prediction website(Go to Stocks-&gt;Algo)</p>
       {/* <p></p> */}
-      {/* <p>This is an example to show the contents of an object using props. {props.version} & {props.message}</p> */}
+      <p>This is an example to show the contents of an object using props. {props.version} & {props.message}</p>
     </div>
   );
 }
@@ -66,7 +66,7 @@ function App() {
       <Navbar/>
       <div id = "page-body">
       <Switch>
-        <Route exact path = "/"><Hello message = "vamsi" version = "2.3"/></Route>
+        <Route exact path = "/"><Hello message = "random" version = "2.3"/></Route>
         <Route exact path = "/home" component = {HomePage}/>
         <Route path = "/home/:name" component = {HomePage} />
         <Route path = "/books" component = {Books}/>
